@@ -552,24 +552,24 @@ begin
               rdBm <= unsigned('1' & B(22 downto 0));
               Ae   <= unsigned('0' & A(30 downto 23));  --biased exponents with extra msb
               Be   <= unsigned('0' & B(30 downto 23));
-              FPD  <= FPDivAlign;
+              FPD  <= FPDivSetExponent;
             end if;
           else
             FPD <= FPDivIdle;           --continue waiting
           end if;
                                         ----------
-        when FPDivAlign =>   -- Check mantissas and align if Am greater than Bm
-          FPD <= FPDivSetExponent;      --default next state
-          if rdAm > rdBm then
-            rdAm <= '0' & rdAm(23 downto 1);  --downshift to make Am less than Bm
-                                              --if Ae < 255 then
-            Ae   <= Ae + 1;
-                                        --else 
-                           -- Qreg                    <= A(31) & NAN; --Exponent overflow, return NaN
-                           -- overflow                <= '1'; --we make no distinction on cause of overflow
-                           -- FPD                     <= FPDivDone;  --go to Calculation done
-                           --end if;  
-          end if;
+--        when FPDivAlign =>   -- Check mantissas and align if Am greater than Bm
+--          FPD <= FPDivSetExponent;      --default next state
+--          if rdAm > rdBm then
+--            rdAm <= '0' & rdAm(23 downto 1);  --downshift to make Am less than Bm
+--                                              --if Ae < 255 then
+--            Ae   <= Ae + 1;
+--                                        --else 
+--                           -- Qreg                    <= A(31) & NAN; --Exponent overflow, return NaN
+--                           -- overflow                <= '1'; --we make no distinction on cause of overflow
+--                           -- FPD                     <= FPDivDone;  --go to Calculation done
+--                           --end if;  
+--          end if;
                                         ---------
                            --Maybe we should break the exponent subtract into two pieces for speed
         when FPDivSetExponent => -- reduce logic used by deleting comparaison leading to same result
