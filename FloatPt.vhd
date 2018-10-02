@@ -572,12 +572,12 @@ begin
           end if;
                                         ---------
                            --Maybe we should break the exponent subtract into two pieces for speed
-        when FPDivSetExponent =>
-          if Ae > Be then
+        when FPDivSetExponent => -- reduce logic used by deleting comparaison leading to same result
+--          if Ae > Be then
             Qe <= std_logic_vector(unsigned(Ae) - unsigned(Be) + EBIAS);
-          else
-            Qe <= std_logic_vector(EBIAS - (unsigned(Be) - unsigned(Ae)));
-          end if;
+--          else
+--            Qe <= std_logic_vector(EBIAS - (unsigned(Be) - unsigned(Ae)));
+--          end if;
           FPD <= FPDivStart;
                                         -----------  
         when FPDivStart =>              --Start the mantissa division
